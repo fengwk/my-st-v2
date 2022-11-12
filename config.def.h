@@ -173,6 +173,15 @@ static unsigned int defaultattr = 11;
  */
 static uint forcemousemod = ShiftMask;
 
+// from @LukeSmithxyz
+static char *openurlcmd[] = { "/bin/sh", "-c",
+    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Follow which url?' -l 10 | xargs -r xdg-open",
+    "externalpipe", NULL };
+static char *copyurlcmd[] = { "/bin/sh", "-c",
+    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard",
+    "externalpipe", NULL };
+static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
+
 /*
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
@@ -204,10 +213,13 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,                     XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,                   XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,                     XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY,                   XK_Page_Up,     kscrollup,      {.i = 10} }, // 向上翻10行
-	{ MODKEY,                   XK_Page_Down,   kscrolldown,    {.i = 10} }, // 向下翻10行
+	{ MODKEY,                      XK_Page_Up,     kscrollup,      {.i = 10} }, // 向上翻10行
+	{ MODKEY,                      XK_Page_Down,   kscrolldown,    {.i = 10} }, // 向下翻10行
 	{ MODKEY|ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} }, // 向上翻一页
 	{ MODKEY|ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} }, // 向下翻一页
+	{ Mod1Mask|ControlMask,        XK_l,           externalpipe,   {.v = openurlcmd } }, // 打开url
+	{ Mod1Mask,                    XK_y,           externalpipe,   {.v = copyurlcmd } }, // 拷贝url
+	{ Mod1Mask,                    XK_o,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
 };
 
 /*
