@@ -18,7 +18,7 @@ sudo make clean install
 - `alt + shift + pageDown` - 下滚一页
 - `ctrl + shift + pageUp` - 放大
 - `ctrl + shift + pageDown` - 缩小
-- `alt + shift + l` - 打开url
+- `alt + ctrl + l` - 打开url
 - `alt + y` - 复制url
 - `alt + ctrl + y` - 打开url
 - `alt + o` - 复制命令输出
