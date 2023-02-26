@@ -5,7 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "SauceCodePro Nerd Font Mono:size=12:antialias=true:autohint=true";
+static char *font = "SauceCodePro Nerd Font:size=12:antialias=true:autohint=true";
+// static char *font = " JetBrainsMono Nerd Font Mono:size=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -249,7 +250,7 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,                      XK_Page_Down,   kscrolldown,    {.i = 10} }, // 向下翻10行
 	{ MODKEY|ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} }, // 向上翻一页
 	{ MODKEY|ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} }, // 向下翻一页
-	{ Mod1Mask|ControlMask,        XK_l,           externalpipe,   {.v = openurlcmd } }, // 打开url
+	{ Mod1Mask,                    XK_u,           externalpipe,   {.v = openurlcmd } }, // 打开url
 	{ Mod1Mask,                    XK_y,           externalpipe,   {.v = copyurlcmd } }, // 拷贝url
 	{ Mod1Mask,                    XK_o,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
 };
