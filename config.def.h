@@ -220,6 +220,7 @@ static char *copyurlcmd[] = { "/bin/sh", "-c",
     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Copy which url?' | tr -d '\n' | xclip -selection clipboard",
     "externalpipe", NULL };
 static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
+// static char *copyoutputnvim[] = { "/bin/sh", "-c", "st-copyout-nvim", "externalpipe", NULL };
 
 /*
  * Internal mouse shortcuts.
@@ -259,6 +260,7 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,                      XK_u,           externalpipe,   {.v = openurlcmd } }, // 打开url
 	{ MODKEY|ShiftMask,            XK_U,           externalpipe,   {.v = copyurlcmd } }, // 拷贝url
 	{ MODKEY,                      XK_o,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
+  // { MODKEY|ShiftMask,            XK_O,           externalpipe,   {.v = copyoutputnvim } }, // 拷贝命令输出到nvim中
 };
 
 /*
