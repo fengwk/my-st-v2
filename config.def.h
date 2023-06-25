@@ -207,11 +207,17 @@ static unsigned int defaultattr = 11;
 static uint forcemousemod = ShiftMask;
 
 // from @LukeSmithxyz
+// static char *openurlcmd[] = { "/bin/sh", "-c",
+//     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Follow which url?' -l 10 | xargs -r xdg-open",
+//     "externalpipe", NULL };
 static char *openurlcmd[] = { "/bin/sh", "-c",
-    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Follow which url?' -l 10 | xargs -r xdg-open",
-    "externalpipe", NULL };
+  "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Follow which url?' | xargs -r xdg-open",
+  "externalpipe", NULL };
+// static char *copyurlcmd[] = { "/bin/sh", "-c",
+//     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard",
+//     "externalpipe", NULL };
 static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard",
+    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Copy which url?' | tr -d '\n' | xclip -selection clipboard",
     "externalpipe", NULL };
 static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
 
@@ -250,9 +256,9 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,                      XK_Page_Down,   kscrolldown,    {.i = 10} }, // 向下翻10行
 	{ MODKEY|ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} }, // 向上翻一页
 	{ MODKEY|ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} }, // 向下翻一页
-	{ Mod1Mask,                    XK_u,           externalpipe,   {.v = openurlcmd } }, // 打开url
-	{ Mod1Mask,                    XK_y,           externalpipe,   {.v = copyurlcmd } }, // 拷贝url
-	{ Mod1Mask,                    XK_o,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
+	{ MODKEY,                      XK_u,           externalpipe,   {.v = openurlcmd } }, // 打开url
+	{ MODKEY|ShiftMask,            XK_U,           externalpipe,   {.v = copyurlcmd } }, // 拷贝url
+	{ MODKEY,                      XK_o,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
 };
 
 /*
@@ -292,6 +298,8 @@ static uint ignoremod = Mod2Mask|XK_SWITCH_MOD;
  * This is the huge key array which defines all compatibility to the Linux
  * world. Please decide about changes wisely.
  */
+// appkey：当 appkey 为 1 (+1) 时，只有当键盘处于应用模式时（通常由一些特殊的终端应用程序如 Vim 或 Emacs 设置），按键才会生成对应的序列。如果 appkey 为 0，那么无论键盘是否处于应用模式，都会生成相同的序列。
+// appcursor：appcursor 的工作方式类似于 appkey，但是它是应用于光标键（如上下左右箭头键）而不是常规的字符键。当 appcursor 为 1 (+1) 时，只有当键盘处于应用模式时，按键才会生成对应的序列。
 static Key key[] = {
 	/* keysym           mask            string      appkey appcursor */
 	{ XK_KP_Home,       ShiftMask,      "\033[2J",       0,   -1},
@@ -386,6 +394,7 @@ static Key key[] = {
 	{ XK_Right,         XK_ANY_MOD,     "\033[C",        0,   -1},
 	{ XK_Right,         XK_ANY_MOD,     "\033OC",        0,   +1},
 	{ XK_ISO_Left_Tab,  ShiftMask,      "\033[Z",        0,    0},
+  { XK_Return,        ControlMask,    "\x1b[13;5u",    0,    0},
 	{ XK_Return,        Mod1Mask,       "\033\r",        0,    0},
 	{ XK_Return,        XK_ANY_MOD,     "\r",            0,    0},
 	{ XK_Insert,        ShiftMask,      "\033[4l",      -1,    0},
