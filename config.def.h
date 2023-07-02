@@ -225,14 +225,18 @@ static char *copyword[] = { "/bin/sh", "-c", "st-copyword",  "externalpipe", NUL
 /*
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
+ *
+ * alt 来自补丁st-universcroll-0.8.4.diff
+ * alt screen 指的是类似nvim之类的应用程序会进入的模式，为的是推出该模式后还能恢复原先的终端显示状态
+ * 0: don't care, -1: not alt screen, 1: alt screen
  */
 static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument       release */
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/* mask                 button   function        argument      release alt */
+	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},     1          },
+	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 5},     0,      -1 },
+	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"}            },
+	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 5},     0,      -1 },
+	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"}            },
 };
 
 /* Internal keyboard shortcuts. */
@@ -253,8 +257,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,                     XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,                   XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,                     XK_Num_Lock,    numlock,        {.i =  0} },
-	{ TERMMOD,                     XK_U,           kscrollup,      {.i = 10} }, // 向上翻10行
-	{ TERMMOD,                     XK_D,           kscrolldown,    {.i = 10} }, // 向下翻10行
+	{ TERMMOD,                     XK_U,           kscrollup,      {.i =  5} }, // 向上翻10行
+	{ TERMMOD,                     XK_D,           kscrolldown,    {.i =  5} }, // 向下翻10行
 	{ TERMMOD,                     XK_Page_Up,     kscrollup,      {.i = -1} }, // 向上翻一页
 	{ TERMMOD,                     XK_Page_Down,   kscrolldown,    {.i = -1} }, // 向下翻一页
 	{ TERMMOD,                     XK_L,           externalpipe,   {.v = openurlcmd } }, // 打开url
