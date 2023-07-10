@@ -210,15 +210,16 @@ static uint forcemousemod = ShiftMask;
 // static char *openurlcmd[] = { "/bin/sh", "-c",
 //     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Follow which url?' -l 10 | xargs -r xdg-open",
 //     "externalpipe", NULL };
-static char *openurlcmd[] = { "/bin/sh", "-c",
-  "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Follow which url?' | xargs -r xdg-open",
-  "externalpipe", NULL };
+// static char *openurlcmd[] = { "/bin/sh", "-c",
+//   "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Open which url?' | xargs -r openurl-or-search.sh",
+//   "externalpipe", NULL };
 // static char *copyurlcmd[] = { "/bin/sh", "-c",
 //     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | dmenu -i -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard",
 //     "externalpipe", NULL };
-static char *copyurlcmd[] = { "/bin/sh", "-c",
-    "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Copy which url?' | tr -d '\n' | xclip -selection clipboard",
-    "externalpipe", NULL };
+// static char *copyurlcmd[] = { "/bin/sh", "-c",
+//     "sed 's/.*│//g' | tr -d '\n' | grep -aEo '(((http|https)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)' | uniq | sed 's/^www./http:\\/\\/www\\./g' | rofi -dmenu -i -p 'Copy which url?' | tr -d '\n' | xclip -selection clipboard",
+//     "externalpipe", NULL };
+static char *openurl[] = { "/bin/sh", "-c", "st-openurl", "externalpipe", NULL };
 static char *copyoutput[] = { "/bin/sh", "-c", "st-copyout", "externalpipe", NULL };
 static char *copyword[] = { "/bin/sh", "-c", "st-copyword",  "externalpipe", NULL };
 
@@ -261,7 +262,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,                     XK_D,           kscrolldown,    {.i =  5} }, // 向下翻10行
 	{ TERMMOD,                     XK_Page_Up,     kscrollup,      {.i = -1} }, // 向上翻一页
 	{ TERMMOD,                     XK_Page_Down,   kscrolldown,    {.i = -1} }, // 向下翻一页
-	{ TERMMOD,                     XK_L,           externalpipe,   {.v = openurlcmd } }, // 打开url
+	{ TERMMOD,                     XK_S,           externalpipe,   {.v = openurl } }, // 打开url
 	{ TERMMOD,                     XK_O,           externalpipe,   {.v = copyoutput } }, // 拷贝命令输出
   { TERMMOD,                     XK_space,       externalpipe,   {.v = copyword } },
   { TERMMOD,                     XK_Return,      newterm,        {.i =  0} },
@@ -1080,7 +1081,8 @@ static Key key[] = {
 	{ XK_plus,         Mod1Mask,                       "\033[43;3u",  0,  0},
 	{ XK_plus,         Mod1Mask|ControlMask,           "\033[43;7u",  0,  0},
 	{ XK_plus,         Mod1Mask|ControlMask|ShiftMask, "\033[43;8u",  0,  0},
-	{ XK_plus,         Mod1Mask|ShiftMask,             "\033[43;4u",  0,  0},
+  // 先去掉，无法被neovim识别
+	// { XK_plus,         Mod1Mask|ShiftMask,             "\033[43;4u",  0,  0},
 	{ XK_question,     ControlMask,                    "\033[63;5u",  0,  0},
 	{ XK_question,     ControlMask|ShiftMask,          "\033[63;6u",  0,  0},
 	{ XK_question,     Mod1Mask,                       "\033[63;3u",  0,  0},
@@ -1109,7 +1111,8 @@ static Key key[] = {
 	{ XK_underscore,   Mod1Mask,                       "\033[95;3u",  0,  0},
 	{ XK_underscore,   Mod1Mask|ControlMask,           "\033[95;7u",  0,  0},
 	{ XK_underscore,   Mod1Mask|ControlMask|ShiftMask, "\033[95;8u",  0,  0},
-	{ XK_underscore,   Mod1Mask|ShiftMask,             "\033[95;4u",  0,  0},
+  // 先去掉，无法被neovim识别
+	// { XK_underscore,   Mod1Mask|ShiftMask,             "\033[95;4u",  0,  0},
 };
 
 /*
