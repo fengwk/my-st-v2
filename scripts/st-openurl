@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # 目前已知无法处理的情况，vim的行号无法在剔除\n后正常拼接，会有前导空格
-tee | tr -d '\n' | grep -aEo '((http|https)://[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | rofi-wrapper.sh -dmenu -i -p 'Open which url or search?' | xargs -r openurl-or-search.sh
+tee | tr -d '\n' | grep -aEo '((http|https)://[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./&%?#=_-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)'| uniq | dwm-rofi -dmenu -i -p 'Open which url or search?' | xargs -r openurl-or-search.sh
